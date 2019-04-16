@@ -15,4 +15,5 @@ language: java
 sudo: required
 script:
   - mvn clean package
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - make -C docker push APP=$DOCKER_NAME PROJECT=$DOCKER_REPO
