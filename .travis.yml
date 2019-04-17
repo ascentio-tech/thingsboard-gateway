@@ -17,6 +17,6 @@ install:
 language: java
 sudo: required
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn -Dsonar.projectKey=$SONAR_PROJECT_KEY clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - make -C docker push APP=$DOCKER_NAME PROJECT=$DOCKER_REPO
