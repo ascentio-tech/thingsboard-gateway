@@ -2,9 +2,31 @@ before_install:
   - sudo rm -f /etc/mavenrc
   - export M2_HOME=/usr/local/maven
   - export MAVEN_OPTS="-Dmaven.repo.local=$HOME/.m2/repository -Xms1024m -Xmx3072m"
+addons:
+  sonarcloud:
+    organization: "ascentio-tech"
 jdk:
- - oraclejdk8
+ - openjdk11
+cache:
+  directories:
+    - "$HOME/.m2"
+services:
+  - docker
+install:
+  - curl -o $HOME/.m2/settings.xml $SETTINGS_XML_URL
 language: java
 sudo: required
-script: mvn clean verify
-install: true
+
+jobs:
+  include:
+    - stage: package
+      script:
+        - mvn -Dsonar.projectKey=$SONAR_PROJECT_KEY clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+    - stage: push
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - make -C docker push APP=$DOCKER_NAME PROJECT=$DOCKER_REPO
+stages:
+  - name: package
+  - name: push
+    if: branch = master AND type = push
