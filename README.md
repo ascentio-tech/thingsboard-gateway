@@ -1,5 +1,11 @@
-# Thingsboard IoT Gateway
-[![Join the chat at https://gitter.im/thingsboard/chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/thingsboard/chat?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Thingsboard IoT Gateway (Ascentio Tech's fork)
+[![Build Status](https://travis-ci.com/ascentio-tech/thingsboard.svg?branch=master)](https://travis-ci.com/ascentio-tech/thingsboard-gateway)
+[![](https://images.microbadger.com/badges/version/ascentiotech/thingsboard-gateway.svg)](https://microbadger.com/images/ascentiotech/thingsboard-gateway "Get your own version badge on microbadger.com")
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ascentio-tech_thingsboard-gateway&metric=alert_status)](https://sonarcloud.io/dashboard?id=ascentio-tech_thingsboard-gateway)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ascentio-tech_thingsboard-gateway&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=ascentio-tech_thingsboard-gateway)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=ascentio-tech_thingsboard-gateway&metric=bugs)](https://sonarcloud.io/dashboard?id=ascentio-tech_thingsboard-gateway)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=ascentio-tech_thingsboard-gateway&metric=code_smells)](https://sonarcloud.io/dashboard?id=ascentio-tech_thingsboard-gateway)
+
 
 The Thingsboard **IoT Gateway** is an open-source solution that allows you to integrate devices connected to legacy and third-party systems with Thingsboard.
 
