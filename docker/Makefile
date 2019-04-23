@@ -3,7 +3,7 @@ PROJECT=thingsboard
 APP=gateway
 
 build:
-	cp ../target/tb-gateway.deb .
+	cp ../target/tb-gateway_*.deb tb-gateway.deb
 	docker build --pull -t ${PROJECT}/${APP}:${VERSION} -t ${PROJECT}/${APP}:latest .
 	rm tb-gateway.deb
 

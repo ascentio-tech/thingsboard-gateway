@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-FROM openjdk:8-jre
+FROM openjdk:11-jre-stretch
 
 ADD run-application.sh /run-application.sh
 ADD tb-gateway.deb /tb-gateway.deb
