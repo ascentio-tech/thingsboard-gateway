@@ -23,7 +23,7 @@ jobs:
     - stage: package
       script:
         - mvn -Djava.version=11 -Dsonar.projectKey=$SONAR_PROJECT_KEY clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
-        - find target -mindepth 1 -not -name '*.deb' -exec rm {} \; 2> /dev/null || echo "Keeping only deb package on target dir"
+        - find target -mindepth 1 -not -name '*.deb' -exec rm -rf {} \; 2> /dev/null || echo "Keeping only deb package on target dir"
     - stage: push
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
