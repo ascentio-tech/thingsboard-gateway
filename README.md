@@ -1,5 +1,5 @@
 # Thingsboard IoT Gateway (Ascentio Tech's fork)
-[![Build Status](https://travis-ci.com/ascentio-tech/thingsboard.svg?branch=master)](https://travis-ci.com/ascentio-tech/thingsboard-gateway)
+[![Build Status](https://travis-ci.com/ascentio-tech/thingsboard-gateway.svg?branch=master)](https://travis-ci.com/ascentio-tech/thingsboard-gateway)
 [![](https://images.microbadger.com/badges/version/ascentiotech/thingsboard-gateway.svg)](https://microbadger.com/images/ascentiotech/thingsboard-gateway "Get your own version badge on microbadger.com")
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ascentio-tech_thingsboard-gateway&metric=alert_status)](https://sonarcloud.io/dashboard?id=ascentio-tech_thingsboard-gateway)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=ascentio-tech_thingsboard-gateway&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=ascentio-tech_thingsboard-gateway)
