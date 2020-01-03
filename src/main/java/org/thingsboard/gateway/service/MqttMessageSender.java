@@ -83,6 +83,7 @@ public class MqttMessageSender implements Runnable {
                         log.debug("Sending message [{}]", message);
                         Future<Void> publishFuture = publishMqttMessage(message);
                         outgoingQueue.add(publishFuture);
+                        Thread.sleep(10);
                     }
                 } else {
                     Thread.sleep(persistence.getPollingInterval());
