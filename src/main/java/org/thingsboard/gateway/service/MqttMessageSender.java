@@ -83,6 +83,12 @@ public class MqttMessageSender implements Runnable {
                         log.debug("Sending message [{}]", message);
                         Future<Void> publishFuture = publishMqttMessage(message);
                         outgoingQueue.add(publishFuture);
+                        // If there is Connect,Attributes and Telemetry message sent for a device back to back
+                        // device type created is Default in platform instead of actual device type.
+                        // This is due to device creation based on attributes/telemetry messaage before connect message in platform
+                        // Delaying message delivery solves the issue. This could impact total message delivery
+                        // from gateway to platform
+                        // Source: https://github.com/ssmaurya/thingsboard-gateway/commit/d560fbf0f639cc89388b16ed179ad8b61fe76356
                         Thread.sleep(10);
                     }
                 } else {
