@@ -4,7 +4,7 @@ build-image:
 
 
 build:
-	mvn clean install -Djava.version=11
+	mvn clean install
 
 
 REMOTE_HOST=192.168.32.217
@@ -19,3 +19,5 @@ deploy-images:
 	sshpass -p Asc3nt10 ssh administrator@${REMOTE_HOST} docker pull localhost:${REMOTE_REGISTRY_PORT}/thingsboard/gateway:${TOKEN}
 	echo "Tagging images in remote server"
 	sshpass -p Asc3nt10 ssh administrator@${REMOTE_HOST} docker tag localhost:${REMOTE_REGISTRY_PORT}/thingsboard/gateway:${TOKEN} ascentiotech/tb-gateway:latest
+
+build-and-deploy: build build-image deploy-images
