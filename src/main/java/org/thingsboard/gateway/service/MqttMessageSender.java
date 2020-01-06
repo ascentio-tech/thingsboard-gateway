@@ -89,7 +89,7 @@ public class MqttMessageSender implements Runnable {
                         // Delaying message delivery solves the issue. This could impact total message delivery
                         // from gateway to platform
                         // Source: https://github.com/ssmaurya/thingsboard-gateway/commit/d560fbf0f639cc89388b16ed179ad8b61fe76356
-                        Thread.sleep(10);
+                        Thread.sleep(100);
                     }
                 } else {
                     Thread.sleep(persistence.getPollingInterval());
