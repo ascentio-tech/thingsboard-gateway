@@ -27,6 +27,7 @@ import org.thingsboard.gateway.extensions.mqtt.client.listener.MqttDeviceStateCh
 import org.thingsboard.gateway.extensions.mqtt.client.listener.MqttRpcResponseMessageListener;
 import org.thingsboard.gateway.extensions.mqtt.client.listener.MqttTelemetryMessageListener;
 import org.thingsboard.gateway.service.AttributesUpdateListener;
+import org.thingsboard.gateway.service.MqttDeliveryFuture;
 import org.thingsboard.gateway.service.RpcCommandListener;
 import org.thingsboard.gateway.service.data.*;
 import org.thingsboard.gateway.service.gateway.GatewayService;
@@ -186,7 +187,7 @@ public class MqttBrokerMonitor implements MqttCallback, AttributesUpdateListener
         cleanUpKeepAliveTimes(deviceName);
     }
 
-    private void onDeviceData(List<DeviceData> data) {
+    /*private void onDeviceData(List<DeviceData> data) {
         for (DeviceData dd : data) {
             if (devices.add(dd.getName())) {
                 gateway.onDeviceConnect(dd.getName(), dd.getType());
@@ -208,6 +209,44 @@ public class MqttBrokerMonitor implements MqttCallback, AttributesUpdateListener
                     log.debug("Scheduling keep alive timer for device {} with timeout = {}", dd.getName(), dd.getTimeout());
                     scheduleDeviceKeepAliveTimer(dd);
                 }
+            }
+        }
+    }*/
+
+    private void processData (DeviceData dd){
+        if (!dd.getAttributes().isEmpty()) {
+            gateway.onDeviceAttributesUpdate(dd.getName(), dd.getAttributes());
+        }
+        if (!dd.getTelemetry().isEmpty()) {
+            gateway.onDeviceTelemetry(dd.getName(), dd.getTelemetry());
+        }
+        if (dd.getTimeout() != 0) {
+            ScheduledFuture<?> future = deviceKeepAliveTimers.get(dd.getName());
+            if (future != null) {
+                log.debug("Re-scheduling keep alive timer for device {} with timeout = {}", dd.getName(), dd.getTimeout());
+                future.cancel(true);
+                deviceKeepAliveTimers.remove(dd.getName());
+                scheduleDeviceKeepAliveTimer(dd);
+            } else {
+                log.debug("Scheduling keep alive timer for device {} with timeout = {}", dd.getName(), dd.getTimeout());
+                scheduleDeviceKeepAliveTimer(dd);
+            }
+        }
+    }
+
+
+    private void onDeviceData(List<DeviceData> data) {
+
+        for (DeviceData dd : data) {
+            if (devices.add(dd.getName())) {
+                MqttDeliveryFuture mqttDeliveryFuture = gateway.onDeviceConnect(dd.getName(), dd.getType());
+                mqttDeliveryFuture.thenAccept(done -> {
+                    if (done){
+                        processData(dd);
+                    }
+                });
+            } else {
+                processData(dd);
             }
         }
     }
@@ -235,18 +274,18 @@ public class MqttBrokerMonitor implements MqttCallback, AttributesUpdateListener
         }
     }
 
-    private void scheduleDeviceKeepAliveTimer(DeviceData dd) {
-        ScheduledFuture<?> f = scheduler.schedule(
-                () -> {
-                    log.warn("[{}] Device is going to be disconnected because of timeout! timeout = {} milliseconds", dd.getName(), dd.getTimeout());
-                    deviceKeepAliveTimers.remove(dd.getName());
-                    gateway.onDeviceDisconnect(dd.getName());
-                },
-                dd.getTimeout(),
-                TimeUnit.MILLISECONDS
-        );
-        deviceKeepAliveTimers.put(dd.getName(), f);
-    }
+        private void scheduleDeviceKeepAliveTimer(DeviceData dd) {
+            ScheduledFuture<?> f = scheduler.schedule(
+                    () -> {
+                        log.warn("[{}] Device is going to be disconnected because of timeout! timeout = {} milliseconds", dd.getName(), dd.getTimeout());
+                        deviceKeepAliveTimers.remove(dd.getName());
+                        gateway.onDeviceDisconnect(dd.getName());
+                    },
+                    dd.getTimeout(),
+                    TimeUnit.MILLISECONDS
+            );
+            deviceKeepAliveTimers.put(dd.getName(), f);
+        }
 
     @Override
     public void onAttributesUpdated(String deviceName, List<KvEntry> attributes) {
