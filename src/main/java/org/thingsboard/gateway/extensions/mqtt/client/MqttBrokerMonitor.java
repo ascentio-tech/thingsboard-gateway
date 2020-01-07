@@ -187,32 +187,6 @@ public class MqttBrokerMonitor implements MqttCallback, AttributesUpdateListener
         cleanUpKeepAliveTimes(deviceName);
     }
 
-    /*private void onDeviceData(List<DeviceData> data) {
-        for (DeviceData dd : data) {
-            if (devices.add(dd.getName())) {
-                gateway.onDeviceConnect(dd.getName(), dd.getType());
-            }
-            if (!dd.getAttributes().isEmpty()) {
-                gateway.onDeviceAttributesUpdate(dd.getName(), dd.getAttributes());
-            }
-            if (!dd.getTelemetry().isEmpty()) {
-                gateway.onDeviceTelemetry(dd.getName(), dd.getTelemetry());
-            }
-            if (dd.getTimeout() != 0) {
-                ScheduledFuture<?> future = deviceKeepAliveTimers.get(dd.getName());
-                if (future != null) {
-                    log.debug("Re-scheduling keep alive timer for device {} with timeout = {}", dd.getName(), dd.getTimeout());
-                    future.cancel(true);
-                    deviceKeepAliveTimers.remove(dd.getName());
-                    scheduleDeviceKeepAliveTimer(dd);
-                } else {
-                    log.debug("Scheduling keep alive timer for device {} with timeout = {}", dd.getName(), dd.getTimeout());
-                    scheduleDeviceKeepAliveTimer(dd);
-                }
-            }
-        }
-    }*/
-
     private void processData (DeviceData dd){
         if (!dd.getAttributes().isEmpty()) {
             gateway.onDeviceAttributesUpdate(dd.getName(), dd.getAttributes());
@@ -233,7 +207,6 @@ public class MqttBrokerMonitor implements MqttCallback, AttributesUpdateListener
             }
         }
     }
-
 
     private void onDeviceData(List<DeviceData> data) {
 
